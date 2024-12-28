@@ -1,5 +1,6 @@
 <script lang='ts'>  
 
+ //TODO: export sharable links with string params
 
   // Create a 40x40 grid with random values between 0 and 1
   let grid = $state(Array(40).fill(0).map(() => 
@@ -270,7 +271,7 @@ function loadFromString() {
       alert('Grid string copied to clipboard!');
     }}
   >
-    Copy Grid String
+    Copy
   </button>
   
   <input 
@@ -284,7 +285,7 @@ function loadFromString() {
     style="color: black; cursor: pointer;"
     onclick={loadFromString}
   >
-    Load Grid From String
+    Load
   </button>
 </div>
 
