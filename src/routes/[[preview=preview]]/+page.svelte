@@ -214,7 +214,7 @@ function loadFromString() {
 
 </script>
 
-<div class="grid-container mx-auto aspect-square h-[50vh] lg:h-[80vh] mt-4">
+<div class="grid-container mx-auto aspect-square h-[40vh] lg:h-[80vh] mt-4">
   {#each grid as row, i}
     <div class="row">
       {#each row as cell, j}
