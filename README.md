@@ -1,58 +1,38 @@
-# Reddoor Wireframer and Site Scaffold
+# Ulti Grid
 
-## Purpose
+An interactive teaching tool for ultimate frisbee defense. Place the disc, offensive
+players, and defenders on a grid field; every open square's brightness shows how
+available that space is to the thrower. Defenders cast shadows over the throwing
+lanes behind them, so you can see at a glance what a defensive setup takes away.
 
-To provide a forkable starting point for all SvelteKit, Tailwind + Prismic sites developed at Reddoor.
+## Using the board
 
-## Contents
+- Pick a mode — **Disc**, **Offense**, or **Defense** — then click the field to place.
+- Clicking an existing piece removes it. The disc can be moved but never removed.
+- **Undo** steps back through your edits; **Clear** resets to an empty field.
+- **Presets** load example setups (Vert, Ho, Sag, Z Trap).
+- **Share link** copies a URL that reproduces your board; **Copy setup** copies the
+  raw setup string. Paste either into the input and hit **Load** to restore a board.
 
-### Base configuration and boilerplate for a SvelteKit app integrated with Tailwind
+Setup strings are a list of `row,col,value;` entries where value is `-1` (disc),
+`-2` (offense), or `-3` (defense). Anything else is ignored on load.
 
-SvelteKit has one of the best developer experiences of any framework, and is especially friendly to component-driven design. We combine it with Tailwind for implementation of CSS to pave the path to quickly devolping reactive, extensible, and data-driven frontends.
+## How openness is computed
 
-### Base configuration and boilerplate necessary to integrate SvelteKit with Prismic CMS
+Each open cell starts at a brightness that decays with distance from the disc.
+A Bresenham ray is traced from the cell to the disc; if it passes through a
+defender, the cell is darkened, more strongly the closer the defender is to the
+cell. A 3x3 smoothing pass softens the edges. All of this lives in
+[`src/lib/grid.js`](src/lib/grid.js), which is pure and covered by tests.
 
-Prismic CMS allows flexible entry of data by content managers without exposing code, and can be integrated into any frontend design as necessary.
+## Development
 
-### Designed and extensible components to be used within Prismic Slices or as Prismic Slices
+```sh
+npm install
+npm run dev        # start the dev server
+npm test           # run the vitest suite
+npm run build      # static build (adapter-static) into build/
+npm run check      # svelte-check
+```
 
-We've designed and implemented a library of responsive, functioning components to use first in the wireframing stage, and then to be customized for each site. Delivering these components as slices will allow both us and clients to quickly prototype and push new pages that remain within the design space originally conceived for the site.
-
-This library will grow as we require new interactive functions or layouts, and allow programmatic work from different projects to be easily accessible and carry over, rather than rebuilding components anew for each project.
-
-## How to Use
-
-1. clone this repo
-
-2. terminal npm i
-
-3. npm audit fix
-
-4. initiate new prismic repo
-
-5. change slicemachine.config.json to new prismic name
-
-6. start dev server and push changes to prismic
-
-7. build site, using slices if complex cms or custom types if not
-
-//TODO: mirror prismic docs
-
-## Next steps
-
-### design
-
-address markup comments on currently implemented components, test components on all browsers
-
-### wireframer
-
-implement current components as prismic slices so tool is usable as a contentful wireframer that maps one to one with our current figma library
-
-### extending the component library
-
-add other designed components from the figma library, convert other commonly used components or systems into this repo as they are used
-
-## Bugs
-
-- arrow sometimes sticks on bump
-- replace font awesome library with `<i>` syntax
+The site is fully static — no server or CMS. Deploys on Netlify via `netlify.toml`.
